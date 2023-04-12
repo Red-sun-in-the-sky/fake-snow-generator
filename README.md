@@ -8,6 +8,11 @@ The following endpoints are available in this application:
 
 1. **GET /az/business_services**: This endpoint returns the list of Business Services along with their associated Business Group.
 
+2. **GET /az/business_service/{business_service_id}**: This endpoint returns details of a specific Business Service based on the provided `business_service_id`.
+
+3. **GET /az/business_services/{business_group}**: This endpoint allows you to retrieve a list of Business Services for a specified Business Group by providing the `business_group` in the URL path.
+
+
 ## Setup and Installation
 
 Follow these steps to set up the application:
