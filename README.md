@@ -20,3 +20,30 @@ Sigue estos pasos para configurar la aplicación:
 
 1. Crea un entorno virtual:
 
+```
+python3 -m venv env
+```
+
+2. Activa el entorno virtual:
+
+- En Linux o macOS:
+```
+source env/bin/activate
+```
+
+- En Windows:
+```
+.\env\Scripts\activate
+```
+
+3. Instala las dependencias del archivo `requirements.txt`:
+```
+pip install -r requirements.txt
+```
+
+4. Ejecuta la aplicación:
+```
+uvicorn main:app --reload
+```
+
+Ahora, la aplicación debería estar ejecutándose en `http://127.0.0.1:8000/`.
