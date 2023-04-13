@@ -1,0 +1,52 @@
+[
+  {
+    "Business Group": "HR",
+    "Business Services": [
+      "HR Critical Service 1",
+      "HR Critical Service 2",
+      "HR Critical Service 3",
+      "HR Critical Service 4",
+      "HR Critical Service 5"
+    ]
+  },
+  {
+    "Business Group": "Finance",
+    "Business Services": [
+      "Finance Critical Service 1",
+      "Finance Critical Service 2",
+      "Finance Critical Service 3",
+      "Finance Critical Service 4",
+      "Finance Critical Service 5"
+    ]
+  },
+  {
+    "Business Group": "Dev",
+    "Business Services": [
+      "Dev Critical Service 1",
+      "Dev Critical Service 2",
+      "Dev Critical Service 3",
+      "Dev Critical Service 4",
+      "Dev Critical Service 5"
+    ]
+  },
+  {
+    "Business Group": "Research",
+    "Business Services": [
+      "Research Critical Service 1",
+      "Research Critical Service 2",
+      "Research Critical Service 3",
+      "Research Critical Service 4",
+      "Research Critical Service 5"
+    ]
+  },
+  {
+    "Business Group": "Operation",
+    "Business Services": [
+      "Operation Critical Service 1",
+      "Operation Critical Service 1",
+      "Operation Critical Service 1",
+      "Operation Critical Service 1",
+      "Operation Critical Service 1"
+    ]
+  }
+]

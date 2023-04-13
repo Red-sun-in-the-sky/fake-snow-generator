@@ -1,32 +1,49 @@
 import json
+import threading
 from typing import List, Optional
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from models.ticket import Ticket
+from models.business_service import BusinessService
+from generator.ticket_generator import TicketGenerator
 
 app = FastAPI()
 
-# Define the BusinessService model
-class BusinessService(BaseModel):
-    Business_Group: str = Field(alias="Business Group")
-    Business_Service: str = Field(alias="Business Service")
+
+@app.on_event("startup")
+async def startup_event():
+    # Init tickets generator execution on the background
+    threading.Thread(target=ticket_generator.run, daemon=True).start()
+
 
 # Load the JSON file into memory on app startup
-with open("bs.json") as f:
+with open("resources/bs.json") as f:
     business_services = json.load(f)
 
-# Route to get all unique Business Groups
-@app.get("/az/business_groups", response_model=List[str])
-def get_business_groups() -> List[str]:
-    business_groups = list(set(bs["Business Group"] for bs in business_services))
-    return business_groups
+# Extract the list of business service names
+business_service_names = [
+    item for group in business_services for item in group["Business Services"]
+]
 
-# Route to get all Business Services
-@app.get("/az/business_services", response_model=List[BusinessService])
-def get_business_services() -> List[BusinessService]:
-    return business_services
+# Create an instance of TicketGenerator with the business service names
+ticket_generator = TicketGenerator(business_services=business_service_names)
 
-# Route to get Business Services by a specific Business Group
-@app.get("/az/business_services/{business_group}", response_model=List[BusinessService])
-def get_business_services_by_group(business_group: str) -> List[BusinessService]:
-    filtered_services = [bs for bs in business_services if bs["Business Group"] == business_group]
-    return filtered_services
+
+@app.on_event("startup")
+async def startup_event():
+    # Init tickets generator execution on the background
+    threading.Thread(target=ticket_generator.run, daemon=True).start()
+
+# Route to get all tickets
+@app.get(
+    "/az/tickets/",
+    response_model=List[Ticket],
+)
+def get_all_tickets() -> List[Ticket]:
+    # Load the tickets JSON file into memory when the endpoint is called
+    with open("resources/tickets.json") as f:
+        tickets_data = json.load(f)
+
+    # Convert the JSON data to Ticket objects
+    tickets = [Ticket(**ticket) for ticket in tickets_data]
+
+    return tickets
