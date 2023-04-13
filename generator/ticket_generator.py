@@ -1,3 +1,4 @@
+import asyncio
 import json
 import time
 import random
@@ -11,12 +12,14 @@ class TicketGenerator:
         max_tickets: int = 30,
         tickets_file_path: str = "resources/tickets.json",
         business_services: List[str] = None,
+        callback = None
     ):
         self.max_tickets = max_tickets
         self.tickets_file_path = tickets_file_path
         self.business_services = business_services or []
         self.tickets = self.load_tickets()
         self.update_interval = 15
+        self.callback = callback
 
     def load_tickets(self) -> List[Ticket]:
         try:
@@ -81,6 +84,10 @@ class TicketGenerator:
                 json.dump(
                     [ticket.dict() for ticket in self.tickets], file, indent=2
                 )
+
+            # Call the callback function if provided
+            if self.callback:
+                asyncio.run(self.callback(self.tickets))
 
             # Wait before updating the tickets again
             time.sleep(self.update_interval)

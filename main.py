@@ -1,5 +1,6 @@
 import json
 import threading
+import httpx
 from typing import List, Optional
 from fastapi import FastAPI
 from models.ticket import Ticket
@@ -14,6 +15,14 @@ async def startup_event():
     # Init tickets generator execution on the background
     threading.Thread(target=ticket_generator.run, daemon=True).start()
 
+async def post_updated_tickets(tickets):
+    url = "http://0.0.0.0:8080/tickets"  # Reemplaza esto con la URL de tu endpoint en az-watch
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=[ticket.dict() for ticket in tickets])
+
+    if response.status_code != 200:
+        print(f"Error al enviar los tickets actualizados a az-watch: {response.text}")
+
 
 # Load the JSON file into memory on app startup
 with open("resources/bs.json") as f:
@@ -25,7 +34,7 @@ business_service_names = [
 ]
 
 # Create an instance of TicketGenerator with the business service names
-ticket_generator = TicketGenerator(business_services=business_service_names)
+ticket_generator = TicketGenerator(business_services=business_service_names, callback=post_updated_tickets)
 
 
 @app.on_event("startup")

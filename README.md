@@ -1,52 +1,22 @@
-# Fake ServiceNow API
+# Fake ServiceNow API con Webhook
 
-The purpose of this application is to simulate the ServiceNow API for development and testing purposes. You can use this application to mimic the behavior of the ServiceNow API without needing to connect to a real ServiceNow instance.
+El propósito de esta aplicación es simular la API de ServiceNow para fines de desarrollo y pruebas. Puedes utilizar esta aplicación para imitar el comportamiento de la API de ServiceNow sin necesidad de conectarte a una instancia real de ServiceNow. La aplicación envía automáticamente los nuevos tickets generados y los Business Services y Business Groups existentes a un webhook.
 
 ## Endpoints
 
-The following endpoints are available in this application:
+Los siguientes endpoints están disponibles en esta aplicación:
 
-1. **GET /az/business_services**: This endpoint returns the list of Business Services along with their associated Business Group.
+1. **GET /az/tickets/**: Este endpoint devuelve la lista de todos los tickets.
 
-2. **GET /az/business_service/{business_service_id}**: This endpoint returns details of a specific Business Service based on the provided `business_service_id`.
+## Webhook
 
-3. **GET /az/business_services/{business_group}**: This endpoint allows you to retrieve a list of Business Services for a specified Business Group by providing the `business_group` in the URL path.
+El webhook se activa cada vez que se generan nuevos tickets o se actualizan los Business Services o Business Groups existentes. La función `post_updated_tickets` en el archivo `main.py` se encarga de enviar los datos al webhook.
 
+Asegúrate de reemplazar la URL en la variable `url` en la función `post_updated_tickets` con la URL de tu endpoint en az-watch.
 
-## Setup and Installation
+## Configuración e instalación
 
-Follow these steps to set up the application:
+Sigue estos pasos para configurar la aplicación:
 
-1. Create a virtual environment:
+1. Crea un entorno virtual:
 
-```
-python3 -m venv env
-```
-
-2. Activate the virtual environment:
-
-- On Linux or macOS:
-
-  ```
-  source env/bin/activate
-  ```
-
-- On Windows:
-
-  ```
-  .\env\Scripts\activate
-  ```
-
-3. Install the dependencies from the `requirements.txt` file:
-
-```
-pip install -r requirements.txt
-```
-
-4. Run the application:
-
-```
-uvicorn main:app --reload
-```
-
-Now, the application should be running on `http://127.0.0.1:8000/`.
